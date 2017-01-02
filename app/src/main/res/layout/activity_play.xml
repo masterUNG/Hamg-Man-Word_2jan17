@@ -36,17 +36,6 @@
         android:textStyle="normal|bold"
         android:textColor="@android:color/background_dark" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txtQuestion"
-        android:layout_centerHorizontal="true"
-        android:text="TextView"
-        android:textSize="45sp"
-        android:textStyle="normal|bold"
-        android:textColor="@android:color/holo_red_light" />
-
 
     <TextView
         android:text="Score 4"
@@ -83,5 +72,17 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="45sp"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/holo_red_light"
+        android:layout_below="@+id/txtQuestion"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible" />
 
 </RelativeLayout>
