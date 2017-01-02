@@ -18,7 +18,8 @@ public class PlayActivity extends AppCompatActivity {
     private EditText editText;
     private TextView timeTextView, scoreTextView, questionTextView, answerTextView;
     private int scoreAnInt = 0, timeAnInt = 30, wordAnInt = 0, index = 0,
-            timesWordAnInt = 0, indexSingleAnswerAnInt = 0, indexHang = 0;
+            timesWordAnInt = 0, indexSingleAnswerAnInt = 0, indexHang = 0,
+            truefalseAnInt = 0;
     private MyConstant myConstant;
     private String[] questionStrings, answerStrings, singleAnswerStrings;
     private String resultString;
@@ -42,23 +43,9 @@ public class PlayActivity extends AppCompatActivity {
         singleAnswerStrings = new String[maxLengthofEditText];
 
         //Question & Answer
-        myConstant = new MyConstant();
-        switch (maxLengthofEditText) {
-            case 4:
-                questionStrings = myConstant.getQuestionStrings();
-                answerStrings = myConstant.getAnswerStrings();
-                break;
-            case 6:
-                questionStrings = myConstant.getQuestion2Strings();
-                answerStrings = myConstant.getAnswer2Strings();
-                break;
-            case 8:
-                questionStrings = myConstant.getQuestion3Strings();
-                answerStrings = myConstant.getAnswer3Strings();
-                break;
-        }   // switch
+        questionAnAnswer(); // กำหนด คำใบ้ และ คำตอบ ว่าจะมีจำนวน ดิจิ 4,6,8
 
-        changeView(0);
+        changeView(0);  // แสดงคำใบ้แรก
 
         checkWord(scoreAnInt);
 
@@ -90,6 +77,24 @@ public class PlayActivity extends AppCompatActivity {
 
     }   // Main Method
 
+    private void questionAnAnswer() {
+        myConstant = new MyConstant();
+        switch (maxLengthofEditText) {
+            case 4:
+                questionStrings = myConstant.getQuestionStrings();
+                answerStrings = myConstant.getAnswerStrings();
+                break;
+            case 6:
+                questionStrings = myConstant.getQuestion2Strings();
+                answerStrings = myConstant.getAnswer2Strings();
+                break;
+            case 8:
+                questionStrings = myConstant.getQuestion3Strings();
+                answerStrings = myConstant.getAnswer3Strings();
+                break;
+        }   // switch
+    }
+
     private void myArrayList(String resultString) {
 
         ArrayList<String> strings = new ArrayList<String>();
@@ -109,10 +114,14 @@ public class PlayActivity extends AppCompatActivity {
         Log.d("3decV5", " s ==> " + s);
 
         if (s.equals(singleAnswerStrings[timesWordAnInt])) {
+            //คำตอบถูก
             Log.d("3decV5", "Result OK");
         } else {
-            Log.d("3decV5", "Result NO");
+            //ตำตอบผิด
 
+            truefalseAnInt += 1;
+            Log.d("3decV5", "Result NO");
+            Log.d("3decV5", "truefalse ==> " + truefalseAnInt);
             changeImage();
 
         }   // if
@@ -128,8 +137,14 @@ public class PlayActivity extends AppCompatActivity {
         int[] intHang = new int[]{R.drawable.hang2, R.drawable.hang3,
                 R.drawable.hang4, R.drawable.hang5};
 
-        imageView.setImageResource(intHang[indexHang]);
-        indexHang += 1;
+        try {
+
+            imageView.setImageResource(intHang[indexHang]);
+            indexHang += 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }   // change
 
