@@ -17,15 +17,22 @@ public class PlayActivity extends AppCompatActivity {
 
     private EditText editText;
     private TextView timeTextView, scoreTextView, questionTextView, answerTextView;
-    private int scoreAnInt = 0, timeAnInt = 30, wordAnInt = 0, index = 0,
-            timesWordAnInt = 0, indexSingleAnswerAnInt = 0, indexHang = 0,
-            truefalseAnInt = 0;
+    private int scoreAnInt = 0; // ค่าของคะแนนที่ตอบถูก
+    private int timeAnInt = 30;  // เวลาที่ใช้แต่ละคำ เวลาหมดจะไปที่ ShowScore
+    private int wordAnInt = 0;   // index ของคำใบ้
+    private int index = 0;  //
+    private int timesWordAnInt = 0; // จำนวนดิจิ ของคำ
+    private int indexSingleAnswerAnInt = 0; //
+    private int indexHang = 0;  //
+    private int falseAnInt = 0; //  จำนวนที่ตอบผิด
+    private int trueAnInt = 0; // จำนวนคำที่ตอบถูก ถ้ามีค่าเท่่ากับ คำจะไปข้อต่อไป
     private MyConstant myConstant;
     private String[] questionStrings, answerStrings, singleAnswerStrings;
     private String resultString;
-    private int maxLengthofEditText;
+    private int maxLengthofEditText;    // จำนวนดิจิ
     private ArrayList<String> answerArrayList, testStrings;
     private ImageView imageView;
+    private ArrayList<String> strings = null;
 
 
     @Override
@@ -45,7 +52,7 @@ public class PlayActivity extends AppCompatActivity {
         //Question & Answer
         questionAnAnswer(); // กำหนด คำใบ้ และ คำตอบ ว่าจะมีจำนวน ดิจิ 4,6,8
 
-        changeView(0);  // แสดงคำใบ้แรก
+        changeView(wordAnInt);  // แสดงคำใบ้แรก
 
         checkWord(scoreAnInt);
 
@@ -97,15 +104,21 @@ public class PlayActivity extends AppCompatActivity {
 
     private void myArrayList(String resultString) {
 
-        ArrayList<String> strings = new ArrayList<String>();
-        String strResult = resultString.substring(timesWordAnInt, timesWordAnInt + 1);
-        strings.add(strResult);
-        String s = strings.toString();
-        Log.d("3decV2", "resultString ==>" + strResult);
-        Log.d("3decV2", "s ==> " + s);
+        try {
 
-        checkAnswer(s); // Check สิ่งที่ คีเข้าไปใน Edit text [1], [12], [123], [1234]
-        timesWordAnInt += 1;
+            ArrayList<String> strings = new ArrayList<String>();
+            String strResult = resultString.substring(timesWordAnInt, timesWordAnInt + 1);
+            strings.add(strResult);
+            String s = strings.toString();
+            Log.d("3decV2", "resultString ==>" + strResult);
+            Log.d("3decV2", "s ==> " + s);
+
+            checkAnswer(s); // Check สิ่งที่ คีเข้าไปใน Edit text [1], [12], [123], [1234]
+            timesWordAnInt += 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }   // myArrayList
 
@@ -116,21 +129,55 @@ public class PlayActivity extends AppCompatActivity {
         if (s.equals(singleAnswerStrings[timesWordAnInt])) {
             //คำตอบถูก
             Log.d("3decV5", "Result OK");
+
+            trueAnInt += 1;
+
+            if (trueAnInt >= maxLengthofEditText) {
+                nextWord();
+            }
+
         } else {
             //ตำตอบผิด
 
-            truefalseAnInt += 1;
+            falseAnInt += 1;
             Log.d("3decV5", "Result NO");
-            Log.d("3decV5", "truefalse ==> " + truefalseAnInt);
+            Log.d("3decV5", "truefalse ==> " + falseAnInt);
+
+            //ดูว่าผิดครบ 4 หรือยัง
+            if (falseAnInt >= 4) {
+                resetWord();
+            }   // if
+
             changeImage();
 
         }   // if
 
-        for (int i=0;i<singleAnswerStrings.length;i++) {
+        for (int i = 0; i < singleAnswerStrings.length; i++) {
             Log.d("3decV5", "singleAnswerString(" + i + ") ==> " + singleAnswerStrings[i]);
         }   //for
 
     }   // checkAnswer
+
+    private void resetWord() {
+        editText.setText("");
+    }
+
+    private void nextWord() {
+
+        String tag = "3janV1";
+        Log.d(tag, "nextWord ทำงาน");
+        timeAnInt = 30;
+        wordAnInt += 1;
+        Log.d(tag, "wordAndInt ==> " + wordAnInt);
+        changeView(wordAnInt);
+        editText.setText("");
+        scoreAnInt += 1;
+        strings = null;
+        Log.d(tag, "scoerAnIng ==> " + scoreAnInt);
+        checkWord(scoreAnInt);
+
+
+    }   // nextWord
 
     private void changeImage() {
 
@@ -149,7 +196,6 @@ public class PlayActivity extends AppCompatActivity {
     }   // change
 
 
-
     private void changeView(int index) {
 
         questionTextView.setText(questionStrings[index]);
@@ -158,8 +204,12 @@ public class PlayActivity extends AppCompatActivity {
 
     private void checkWord(int indexWord) {
 
+        String[] strings = null;
+        String tag = "3decV3";
         Log.d("3decV3", "คำตอบ ข้อที่ (" + indexWord + ") ==> " + answerStrings[indexWord]);
-        String[] strings = answerStrings[indexWord].split("");
+        strings = answerStrings[indexWord].split("");
+        Log.d(tag, "string.length ==> " + strings.length);
+
         for (int i = 1; i < strings.length; i++) {
             Log.d("3decV3", "strings(" + i + ")= " + strings[i]);
 
@@ -168,29 +218,24 @@ public class PlayActivity extends AppCompatActivity {
         }   // for
 
 
-
-        for (int i=1;i<strings.length;i++) {
+        for (int i = 1; i < strings.length; i++) {
             answerArrayList = new ArrayList<String>();
             answerArrayList.add(strings[i]);
             Log.d("3decV3", "answerArrayList ==> " + answerArrayList.toString());
         }
 
 
-
-
-
     }   // checkWord
 
     private void createTrueAnswer(int maxLengthofEditText, String string) {
 
-        ArrayList<String> strings = new ArrayList<String>();
+        strings = new ArrayList<String>();
         strings.add(string);
         String s = strings.toString();
         Log.d("3decV4", "ค่าที่ได้จากการแยกคำ s ==> " + s);
 
         singleAnswerStrings[indexSingleAnswerAnInt] = s;
         indexSingleAnswerAnInt += 1;
-
 
 
     }   // createTrue
