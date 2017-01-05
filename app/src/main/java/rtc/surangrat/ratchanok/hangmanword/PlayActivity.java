@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,9 +46,7 @@ public class PlayActivity extends AppCompatActivity {
         checkTime();
 
         //Setup
-        maxLengthofEditText = getIntent().getIntExtra("Word", 4);
-        Log.d("3decV1", "maxLength ==> " + maxLengthofEditText);
-        singleAnswerStrings = new String[maxLengthofEditText];
+        setUp();
 
         //Question & Answer
         questionAnAnswer(); // กำหนด คำใบ้ และ คำตอบ ว่าจะมีจำนวน ดิจิ 4,6,8
@@ -84,6 +83,20 @@ public class PlayActivity extends AppCompatActivity {
 
     }   // Main Method
 
+    private void setUp() {
+        maxLengthofEditText = getIntent().getIntExtra("Word", 4);
+        Log.d("3decV1", "maxLength ==> " + maxLengthofEditText);
+        singleAnswerStrings = new String[maxLengthofEditText];
+    }
+
+    public void clickTest(View view) {
+        String tab = "5janV1";
+        Log.d(tab, "คลิก Test");
+
+
+    }   // clickTest
+
+    //กำหนด โหมดว่า จะเล่นแบบ 4,6,8 โดยดูการรับค่า Intent จาก Activity ที่มา
     private void questionAnAnswer() {
         myConstant = new MyConstant();
         switch (maxLengthofEditText) {
