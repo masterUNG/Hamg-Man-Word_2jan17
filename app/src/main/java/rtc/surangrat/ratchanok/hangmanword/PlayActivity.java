@@ -1,6 +1,7 @@
 package rtc.surangrat.ratchanok.hangmanword;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +33,7 @@ public class PlayActivity extends AppCompatActivity {
         mySetup();
 
         bindWidget();
-        
+
     }   // Main Method
 
     private void mySetup() {
@@ -45,7 +46,7 @@ public class PlayActivity extends AppCompatActivity {
     private void bindWidget() {
 
         answerTextView = (TextView) findViewById(R.id.textView7);
-        for (int i=0;i<keyboardInts.length;i++) {
+        for (int i = 0; i < keyboardInts.length; i++) {
             keyboard[i] = (Button) findViewById(keyboardInts[i]);
         }
 
@@ -53,17 +54,17 @@ public class PlayActivity extends AppCompatActivity {
 
     public void onClickMyKeyboard(View view) {
 
-       for (int i=0;i<keyboard.length;i++) {
+        for (int i = 0; i < keyboard.length; i++) {
 
-           if (view.getId() == keyboardInts[i]) {
+            if (view.getId() == keyboardInts[i]) {
 
-               answerTextView.append(keyboardStrings[i]);
-               answerString = answerTextView.getText().toString().trim();
-               checkWord();
+                answerTextView.append(keyboardStrings[i]);
+                answerString = answerTextView.getText().toString().trim();
+                checkWord();
 
-           }    // if
+            }    // if
 
-       }    //for
+        }    //for
 
     }   // onClick
 
@@ -71,9 +72,23 @@ public class PlayActivity extends AppCompatActivity {
 
         //ดูว่า digi เกิดหรือเปล่า
         if (answerString.length() >= wordAnInt) {
-            answerTextView.setText("");
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    clearText();
+                }
+            },1000);
         }
 
     }   // checkWord
+
+    private void clearText() {
+        answerTextView.setText("");
+    }
+
+    public void myClearAll(View view) {
+        answerTextView.setText("");
+    }
 
 } // Main Class
