@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class PlayActivity extends AppCompatActivity {
 
     //Explicit
-    private TextView answerTextView;
+    private TextView answerTextView, questionTextView;
     private String answerString;
     private Button[] keyboard = new Button[26];
     private int[] keyboardInts = new int[]{R.id.btnA, R.id.btnB, R.id.btnC, R.id.btnD,
@@ -24,15 +24,19 @@ public class PlayActivity extends AppCompatActivity {
             "y", "z"};
     private int wordAnInt; //  จำนวน digi ของคำ
     private String[] tag = new String[]{"7janV1"};
+    private MyConstant myConstant;
+    private String[] questionStrings; // คำใบ้
+    private String[] answerTrueStrings; // คำตอบ
+    private int indexTimes = 0;// ข้อ 0,1,2,3...
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        mySetup();
-
         bindWidget();
+
+        mySetup();
 
     }   // Main Method
 
@@ -40,8 +44,29 @@ public class PlayActivity extends AppCompatActivity {
 
         wordAnInt = getIntent().getIntExtra("Word", 4);
         Log.d(tag[0], "ค่าที่ ส่งมาจาก MainHold wordAnInt ==> " + wordAnInt);
+        myConstant = new MyConstant();
 
-    }
+        switch (wordAnInt) {
+            case 4:
+                questionStrings = myConstant.getQuestionStrings();
+                answerTrueStrings = myConstant.getAnswerStrings();
+                break;
+            case 6:
+                questionStrings = myConstant.getQuestion2Strings();
+                answerTrueStrings = myConstant.getAnswer2Strings();
+                break;
+            case 8:
+                questionStrings = myConstant.getQuestion3Strings();
+                answerTrueStrings = myConstant.getAnswer3Strings();
+                break;
+        }   // switch
+
+        //กำหนดค่าเริ่มต้น
+        Log.d(tag[0], "question0 ==> " + questionStrings[0]);
+        questionTextView.setText(questionStrings[0]);
+
+
+    }   // mySetUp
 
     private void bindWidget() {
 
@@ -49,6 +74,7 @@ public class PlayActivity extends AppCompatActivity {
         for (int i = 0; i < keyboardInts.length; i++) {
             keyboard[i] = (Button) findViewById(keyboardInts[i]);
         }
+        questionTextView = (TextView) findViewById(R.id.textView3);
 
     }   // bindWidget
 
@@ -72,13 +98,18 @@ public class PlayActivity extends AppCompatActivity {
 
         //ดูว่า digi เกิดหรือเปล่า
         if (answerString.length() >= wordAnInt) {
+
+            indexTimes += 1;
+
+            //หน่วงเวลา 1 วินาที ก่อน เครียร
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     clearText();
+                    questionTextView.setText(questionStrings[indexTimes]);
                 }
-            },1000);
+            }, 1000);
         }
 
     }   // checkWord
