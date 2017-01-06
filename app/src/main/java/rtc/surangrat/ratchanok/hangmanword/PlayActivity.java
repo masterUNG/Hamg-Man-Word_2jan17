@@ -27,6 +27,7 @@ public class PlayActivity extends AppCompatActivity {
     private int indexHang = 0;  //
     private int falseAnInt = 0; //  จำนวนที่ตอบผิด
     private int trueAnInt = 0; // จำนวนคำที่ตอบถูก ถ้ามีค่าเท่่ากับ คำจะไปข้อต่อไป
+    private int indexTest = 0; // Integer ที่เพิ่มค่า ถ้า คลิก Text
     private MyConstant myConstant;
     private String[] questionStrings, answerStrings, singleAnswerStrings;
     private String resultString;
@@ -43,7 +44,7 @@ public class PlayActivity extends AppCompatActivity {
 
         bindWidget();
 
-        checkTime();
+        //checkTime();
 
         //Setup
         setUp();
@@ -57,6 +58,14 @@ public class PlayActivity extends AppCompatActivity {
 
 
         //About Edittext
+        getOneDigit();
+
+
+
+    }   // Main Method
+
+    private void getOneDigit() {
+
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLengthofEditText)});
 
         editText.addTextChangedListener(new TextWatcher() {
@@ -80,8 +89,7 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
 
-
-    }   // Main Method
+    }
 
     private void setUp() {
         maxLengthofEditText = getIntent().getIntExtra("Word", 4);
@@ -93,12 +101,19 @@ public class PlayActivity extends AppCompatActivity {
         String tab = "5janV1";
         Log.d(tab, "คลิก Test");
 
+        indexTest += 1; // เพิ่มค่า ทุกครั้งที่ คลิก Text
+        Log.d(tab, "indexTest ==> " + indexTest);
+
+        changeView(indexTest);
+
 
     }   // clickTest
 
     //กำหนด โหมดว่า จะเล่นแบบ 4,6,8 โดยดูการรับค่า Intent จาก Activity ที่มา
     private void questionAnAnswer() {
         myConstant = new MyConstant();
+
+        //Setup คำใบ้ และ เฉลย มาเก็บไว้ใน Array
         switch (maxLengthofEditText) {
             case 4:
                 questionStrings = myConstant.getQuestionStrings();
@@ -113,7 +128,7 @@ public class PlayActivity extends AppCompatActivity {
                 answerStrings = myConstant.getAnswer3Strings();
                 break;
         }   // switch
-    }
+    }   // questionAnswer
 
     private void myArrayList(String resultString) {
 
@@ -215,15 +230,16 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
+    // จะทำงาน ตามจำนวน
     private void checkWord(int indexWord) {
+        String tag = "3decV3";
+        Log.d(tag, "คำตอบ ข้อที่ (" + indexWord + ") ==> " + answerStrings[indexWord]);
 
         String[] strings = null;
-        String tag = "3decV3";
-        Log.d("3decV3", "คำตอบ ข้อที่ (" + indexWord + ") ==> " + answerStrings[indexWord]);
-        strings = answerStrings[indexWord].split("");
+        strings = answerStrings[indexWord].split("");   //แยก Word เป็น digi
         Log.d(tag, "string.length ==> " + strings.length);
 
-        for (int i = 1; i < strings.length; i++) {
+        for (int i = 0; i < strings.length; i++) {
             Log.d("3decV3", "strings(" + i + ")= " + strings[i]);
 
             createTrueAnswer(maxLengthofEditText, strings[i]);
