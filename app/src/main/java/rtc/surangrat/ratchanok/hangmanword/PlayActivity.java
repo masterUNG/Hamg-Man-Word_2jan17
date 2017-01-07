@@ -23,11 +23,12 @@ public class PlayActivity extends AppCompatActivity {
             "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
             "y", "z"};
     private int wordAnInt; //  จำนวน digi ของคำ
-    private String[] tag = new String[]{"7janV1"};
+    private String[] tag = new String[]{"7janV1", "8janV1"};
     private MyConstant myConstant;
     private String[] questionStrings; // คำใบ้
     private String[] answerTrueStrings; // คำตอบ
     private int indexTimes = 0;// ข้อ 0,1,2,3...
+    private String[] sepAnserStrings; // คือคำตอบที่ถูกแยก
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,24 @@ public class PlayActivity extends AppCompatActivity {
 
         mySetup();
 
+        aboutAnswer(0);
+
     }   // Main Method
+
+    //เอาคำตอบ มาแยกคำ
+    private void aboutAnswer(int indexTimes) {
+
+        Log.d(tag[1], "ข้อที่ " + indexTimes);
+        Log.d(tag[1], "คำตอบที่ได้ ==> " + answerTrueStrings[indexTimes]);
+
+
+        sepAnserStrings = answerTrueStrings[indexTimes].split("");
+        for (int i=0;i<sepAnserStrings.length;i++) {
+            Log.d(tag[1], "sepAns(" + i + ") ==> " + sepAnserStrings[i]);
+        }
+
+
+    }   // aboutAnswer
 
     private void mySetup() {
 
@@ -86,6 +104,10 @@ public class PlayActivity extends AppCompatActivity {
 
                 answerTextView.append(keyboardStrings[i]);
                 answerString = answerTextView.getText().toString().trim();
+                Log.d(tag[1], "digi ที่ ==> " + answerString.length());
+
+                checkTrueFalseDigi(answerString.length(), keyboardStrings[i]);
+
                 checkWord();
 
             }    // if
@@ -93,6 +115,13 @@ public class PlayActivity extends AppCompatActivity {
         }    //for
 
     }   // onClick
+
+    private void checkTrueFalseDigi(int index, String digiKeyboard) {
+
+        Log.d(tag[1], "digiKeyboard ==> " + digiKeyboard);
+        Log.d(tag[1], "sepAns ==>" + sepAnserStrings[index]);
+
+    }
 
     private void checkWord() {
 
@@ -108,6 +137,7 @@ public class PlayActivity extends AppCompatActivity {
                 public void run() {
                     clearText();
                     questionTextView.setText(questionStrings[indexTimes]);
+                    aboutAnswer(indexTimes);
                 }
             }, 1000);
         }
