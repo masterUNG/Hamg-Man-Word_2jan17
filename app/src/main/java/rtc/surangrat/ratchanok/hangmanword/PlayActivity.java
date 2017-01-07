@@ -1,11 +1,15 @@
 package rtc.surangrat.ratchanok.hangmanword;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PlayActivity extends AppCompatActivity {
@@ -23,12 +27,14 @@ public class PlayActivity extends AppCompatActivity {
             "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
             "y", "z"};
     private int wordAnInt; //  จำนวน digi ของคำ
-    private String[] tag = new String[]{"7janV1", "8janV1"};
+    private String[] tag = new String[]{"7janV1", "8janV1", "8janV2"};
     private MyConstant myConstant;
     private String[] questionStrings; // คำใบ้
     private String[] answerTrueStrings; // คำตอบ
     private int indexTimes = 0;// ข้อ 0,1,2,3...
     private String[] sepAnserStrings; // คือคำตอบที่ถูกแยก
+    private ImageView imageView;
+    private int falseAnInt = 0;     // ถ้าผิดจะเพิ่ม
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,45 @@ public class PlayActivity extends AppCompatActivity {
         aboutAnswer(0);
 
     }   // Main Method
+
+    private void myAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PlayActivity.this);
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.doremon48);
+        builder.setTitle("Game Over");
+        builder.setMessage("Please Try Again");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    //เมธอด ที่ทำหน้าที่ เปลี่ยนรูปถ้า ผิด
+    private void changeImage(int index) {
+
+        int[] intHang = new int[]{R.drawable.hang1, R.drawable.hang2, R.drawable.hang3,
+                R.drawable.hang4, R.drawable.hang5};
+
+        try {
+
+            if (index < 4) {
+                imageView.setImageResource(intHang[index]);
+            } else {
+                myAlert();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }   // change
 
     //เอาคำตอบ มาแยกคำ
     private void aboutAnswer(int indexTimes) {
@@ -93,6 +138,7 @@ public class PlayActivity extends AppCompatActivity {
             keyboard[i] = (Button) findViewById(keyboardInts[i]);
         }
         questionTextView = (TextView) findViewById(R.id.textView3);
+        imageView = (ImageView) findViewById(R.id.imageView2);
 
     }   // bindWidget
 
@@ -118,8 +164,14 @@ public class PlayActivity extends AppCompatActivity {
 
     private void checkTrueFalseDigi(int index, String digiKeyboard) {
 
-        Log.d(tag[1], "digiKeyboard ==> " + digiKeyboard);
-        Log.d(tag[1], "sepAns ==>" + sepAnserStrings[index]);
+        Log.d(tag[2], "digiKeyboard ==> " + digiKeyboard);
+        Log.d(tag[2], "sepAns ==>" + sepAnserStrings[index]);
+
+        if (!digiKeyboard.equals(sepAnserStrings[index])) {
+            falseAnInt += 1;
+            Log.d(tag[2], "falseAnInt ==> " + falseAnInt);
+            changeImage(falseAnInt);
+        }
 
     }
 
