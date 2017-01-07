@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class PlayActivity extends AppCompatActivity {
 
     //Explicit
-    private TextView answerTextView, questionTextView;
+    private TextView answerTextView, questionTextView, scoreTextView;
     private String answerString;
     private Button[] keyboard = new Button[26];
     private int[] keyboardInts = new int[]{R.id.btnA, R.id.btnB, R.id.btnC, R.id.btnD,
@@ -35,6 +35,8 @@ public class PlayActivity extends AppCompatActivity {
     private String[] sepAnserStrings; // คือคำตอบที่ถูกแยก
     private ImageView imageView;
     private int falseAnInt = 0;     // ถ้าผิดจะเพิ่ม
+    private int scoreAnInt = 0;     // คะแนนที่ได้
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +141,7 @@ public class PlayActivity extends AppCompatActivity {
         }
         questionTextView = (TextView) findViewById(R.id.textView3);
         imageView = (ImageView) findViewById(R.id.imageView2);
+        scoreTextView = (TextView) findViewById(R.id.textView5);
 
     }   // bindWidget
 
@@ -187,6 +190,13 @@ public class PlayActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+
+                    //ตรวจคะแนน
+                    if (answerString.equals(answerTrueStrings[indexTimes - 1])) {
+                        scoreAnInt += 1;
+                        scoreTextView.setText("Score = " + scoreAnInt);
+                    }
+
                     clearText();
                     questionTextView.setText(questionStrings[indexTimes]);
                     aboutAnswer(indexTimes);

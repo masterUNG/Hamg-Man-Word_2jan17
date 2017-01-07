@@ -30,7 +30,7 @@
 
 
     <TextView
-        android:text="Score 4"
+        android:text="Score 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView5"
@@ -38,18 +38,6 @@
         android:textSize="30sp"
         android:textColor="@android:color/holo_purple"
         android:textStyle="normal|bold" />
-
-    <TextView
-        android:text="30 sec"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4"
-        android:textSize="30sp"
-        android:textStyle="normal|bold"
-        android:textColor="@android:color/holo_purple"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -395,6 +383,18 @@
         android:textStyle="normal|bold"
         android:background="@android:color/holo_orange_light"
         android:padding="5dp" />
+
+    <TextView
+        android:text="30 sec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:textSize="30sp"
+        android:textStyle="normal|bold"
+        android:textColor="@android:color/holo_purple"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
