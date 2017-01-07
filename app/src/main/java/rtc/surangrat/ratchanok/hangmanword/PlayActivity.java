@@ -15,7 +15,7 @@ import android.widget.TextView;
 public class PlayActivity extends AppCompatActivity {
 
     //Explicit
-    private TextView answerTextView, questionTextView, scoreTextView;
+    private TextView answerTextView, questionTextView, scoreTextView, showTimeTextView;
     private String answerString;
     private Button[] keyboard = new Button[26];
     private int[] keyboardInts = new int[]{R.id.btnA, R.id.btnB, R.id.btnC, R.id.btnD,
@@ -36,6 +36,8 @@ public class PlayActivity extends AppCompatActivity {
     private ImageView imageView;
     private int falseAnInt = 0;     // ถ้าผิดจะเพิ่ม
     private int scoreAnInt = 0;     // คะแนนที่ได้
+    private int showTimeAnInt = 30; // เวลา 30  วินาที
+    private boolean aBoolean = true;
 
 
     @Override
@@ -49,7 +51,33 @@ public class PlayActivity extends AppCompatActivity {
 
         aboutAnswer(0);
 
+        checkTime();
+
     }   // Main Method
+
+    private void checkTime() {
+
+        if (showTimeAnInt == 0) {
+
+            aBoolean = false;
+            myAlert();
+
+        }   // if
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (aBoolean) {
+                    showTimeAnInt -= 1;
+                    showTimeTextView.setText(Integer.toString(showTimeAnInt) + " Sec");
+                    checkTime();
+                }
+            }
+        }, 1000);
+
+    }   // checkTime
+
 
     private void myAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(PlayActivity.this);
@@ -60,6 +88,7 @@ public class PlayActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                aBoolean = true;
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
@@ -142,6 +171,7 @@ public class PlayActivity extends AppCompatActivity {
         questionTextView = (TextView) findViewById(R.id.textView3);
         imageView = (ImageView) findViewById(R.id.imageView2);
         scoreTextView = (TextView) findViewById(R.id.textView5);
+        showTimeTextView = (TextView) findViewById(R.id.textView4);
 
     }   // bindWidget
 
